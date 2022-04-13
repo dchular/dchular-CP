@@ -51,37 +51,36 @@ const int MOD = 1000000007;
 int dx[4]={1,0,-1,0};
 int dy[4]={0,1,0,-1};
 
-bool check(ll num){
-  // 1 bhd ariin hiij bga uildel hudlaa boloh uchir tusd ni handling hiih
-  if(num == 1) return false;
-
-  // 2t huvaagdaj bh zuur 2t huvaana
-  while(num % 2 == 0){
-    num /=2;
-  }
-  // odoo num 2-t huvaagdahgui
-  // 3t huvaagdaj bh zuur 3t huvaana
-  while(num % 3 == 0){
-    num /=3;
-  }
-  // odoo num 3t huvaagdahgui
-  // odoo num == 1 bval num maani 2^p * 3^q gsn helbertei baisan gsn ug
-  if(num == 1) return true;
-  else return false;
-}
-
 int main(){
-  ll i = 1;
-  ll cnt = 0;
-  ll n;
-  cin >> n;
-  while(1){
-    if(check(i)) cnt++;
-    if(cnt == n){
-      cout << i << endl;
-      return 0;
+  ll q;
+  cin >> q;
+  deque<pll> d;
+  rep(q){
+    ll command;
+    cin >> command;
+    if(command == 1){
+      ll x,c;
+      cin >> x >> c;
+      d.pb({x,c});
     }
-    i++;
+    else{
+      ll c;
+      cin >> c;
+      ll sum = 0;
+      while(c > 0){
+        pll P = d.front();d.pop_front();
+        if(c >= P.se){
+          sum += P.fi * P.se;
+          c -= P.se;
+        }
+        else{
+          sum += P.fi * c;
+          d.push_front({P.fi,P.se-c});
+          c = 0;
+        }
+      }
+      cout << sum << endl;
+    }
   }
   return 0;
 }

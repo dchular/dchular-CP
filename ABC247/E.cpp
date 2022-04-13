@@ -51,37 +51,67 @@ const int MOD = 1000000007;
 int dx[4]={1,0,-1,0};
 int dy[4]={0,1,0,-1};
 
-bool check(ll num){
-  // 1 bhd ariin hiij bga uildel hudlaa boloh uchir tusd ni handling hiih
-  if(num == 1) return false;
+vll v;
+ll ans = 0;
+ll n,x,y;
 
-  // 2t huvaagdaj bh zuur 2t huvaana
-  while(num % 2 == 0){
-    num /=2;
+void solve(){
+  ll sz = v.size();
+  ll ng = 0;
+  ll X = 0;
+  ll Y = 0;
+  ll XY = 0;
+
+  ll Xin = -1;
+  ll Yin = -1;
+  rep(sz){
+    if(v[i] == x && v[i] == y){
+      if(Xin != -1){
+        XY += Xin + 1;
+        XY += 1;
+      }
+      if(Xin == -1) XY++;
+      Xin = i;
+      Yin = i;
+    }
+    else if(v[i] == x){
+      if(Yin != -1){
+        // cout << Yin + 1 << endl;
+        XY += Yin + 1;
+      }
+      Xin = i;
+    }
+    else if(v[i] == y){
+      if(Xin != -1){
+        // cout << Xin + 1 << endl;
+        XY += Xin + 1;
+      }
+      Yin = i;
+    }
+    else{
+      if(Xin != -1 && Yin != -1){
+        XY += min(Xin,Yin) + 1;
+      }
+    }
   }
-  // odoo num 2-t huvaagdahgui
-  // 3t huvaagdaj bh zuur 3t huvaana
-  while(num % 3 == 0){
-    num /=3;
-  }
-  // odoo num 3t huvaagdahgui
-  // odoo num == 1 bval num maani 2^p * 3^q gsn helbertei baisan gsn ug
-  if(num == 1) return true;
-  else return false;
+  ans += XY;
+  return;
 }
 
 int main(){
-  ll i = 1;
-  ll cnt = 0;
-  ll n;
-  cin >> n;
-  while(1){
-    if(check(i)) cnt++;
-    if(cnt == n){
-      cout << i << endl;
-      return 0;
-    }
-    i++;
+  cin >> n >> x >> y;
+  vll a(n+1);
+  rep(n){
+    cin >> a[i];
   }
+  a.pb(-1);
+  rep(n+1){
+    if(a[i] > x || a[i] < y){
+      if(v.size() != 0) solve();
+      v.clear();
+    }
+    else v.pb(a[i]);
+  }
+  cout << ans << endl;
   return 0;
 }
